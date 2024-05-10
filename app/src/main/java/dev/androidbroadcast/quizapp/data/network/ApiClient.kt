@@ -1,6 +1,5 @@
 package dev.androidbroadcast.quizapp.data.network
 
-import dev.maruffirdaus.kuizee.data.network.QuizApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
