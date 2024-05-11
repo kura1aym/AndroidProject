@@ -1,4 +1,4 @@
-package dev.androidbroadcast.quizapp.ui.main.adapter
+package dev.androidbroadcast.quizapp.ui.edit.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,23 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import dev.androidbroadcast.quizapp.R
 import dev.androidbroadcast.quizapp.databinding.CardRowItemBinding
-import dev.androidbroadcast.quizapp.domain.model.Quiz
-import dev.androidbroadcast.quizapp.ui.helper.QuizDiffCallback
+import dev.androidbroadcast.quizapp.domain.model.Answer
+import dev.androidbroadcast.quizapp.ui.helper.AnswerDiffCallback
 
-class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
-    private val listQuiz = ArrayList<Quiz>()
+class AnswerAdapter : RecyclerView.Adapter<AnswerAdapter.AnswerViewHolder>() {
+    private val listAnswer = ArrayList<Answer>()
     private var deleteButtonStatus = false
     var selectAllStatus = false
     private var selectedItems = intArrayOf()
     private lateinit var onItemClickCallback: OnItemClickCallback
     private lateinit var onItemLongClickCallback: OnItemLongClickCallback
 
-    fun setListQuiz(listQuiz: List<Quiz>) {
-        val diffCallback = QuizDiffCallback(this.listQuiz, listQuiz)
+    fun setListAnswer(listAnswer: List<Answer>) {
+        val diffCallback = AnswerDiffCallback(this.listAnswer, listAnswer)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.listQuiz.clear()
-        this.listQuiz.addAll(listQuiz)
+        this.listAnswer.clear()
+        this.listAnswer.addAll(listAnswer)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -50,16 +51,16 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
         this.onItemLongClickCallback = onItemLongClickCallback
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopicViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AnswerViewHolder {
         val binding = CardRowItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return TopicViewHolder(binding)
+        return AnswerViewHolder(parent, binding)
     }
 
-    override fun onBindViewHolder(holder: TopicViewHolder, position: Int) {
-        holder.bind(listQuiz[position], position)
+    override fun onBindViewHolder(holder: AnswerViewHolder, position: Int) {
+        holder.bind(listAnswer[position], position)
         holder.itemView.setOnClickListener {
             if (!deleteButtonStatus) {
-                onItemClickCallback.onItemClicked(listQuiz[position])
+                onItemClickCallback.onItemClicked(position)
             } else {
                 holder.binding.checkbox.isChecked = !holder.binding.checkbox.isChecked
             }
@@ -67,15 +68,19 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return listQuiz.size
+        return listAnswer.size
     }
 
-    inner class TopicViewHolder(internal val binding: CardRowItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(quizData: Quiz, adapterPosition: Int) {
+    inner class AnswerViewHolder(private val parent: ViewGroup, internal val binding: CardRowItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(answerData: Answer, adapterPosition: Int) {
             with(binding) {
                 media.visibility = View.GONE
-                title.text = quizData.title
-                supportingText.text = quizData.desc
+                title.text = answerData.answer
+                if (answerData.isCorrect) {
+                    supportingText.text = parent.resources.getText(R.string.correct_answer)
+                } else {
+                    supportingText.visibility = View.GONE
+                }
                 card.setOnLongClickListener {
                     onItemLongClickCallback.onItemLongClicked(binding)
                     true
@@ -99,14 +104,14 @@ class EditAdapter : RecyclerView.Adapter<EditAdapter.TopicViewHolder>() {
                 selectButton.visibility = View.GONE
                 editButton.visibility = View.VISIBLE
                 editButton.setOnClickListener {
-                    onItemClickCallback.onItemClicked(quizData)
+                    onItemClickCallback.onItemClicked(adapterPosition)
                 }
             }
         }
     }
 
     interface OnItemClickCallback {
-        fun onItemClicked(quizData: Quiz)
+        fun onItemClicked(position: Int)
     }
 
     interface OnItemLongClickCallback {

@@ -1,7 +1,7 @@
 package dev.androidbroadcast.quizapp.ui.helper
 
 import androidx.recyclerview.widget.DiffUtil
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
 
 class LeaderboardDiffCallback(
     private val oldLeaderboardList: List<Leaderboard>,

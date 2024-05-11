@@ -7,7 +7,7 @@ import dev.androidbroadcast.quizapp.ui.edit.viewmodel.EditQuestionViewModel
 import dev.androidbroadcast.quizapp.ui.main.viewmodel.MainViewModel
 import dev.androidbroadcast.quizapp.ui.play.viewmodel.PlayViewModel
 
-class ViewModelFactory(private val mApplication: Application) :
+class ViewModelFactory private constructor(private val mApplication: Application) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -36,3 +36,4 @@ class ViewModelFactory(private val mApplication: Application) :
         }
     }
 }
+
