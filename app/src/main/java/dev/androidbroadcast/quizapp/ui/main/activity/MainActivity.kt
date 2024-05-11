@@ -23,9 +23,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val factory = ViewModelFactory(application)
-        mainViewModel = ViewModelProvider(this, factory).get(MainViewModel::class.java)
-
+        mainViewModel = ViewModelProvider(this, ViewModelFactory.getInstance(application)).get(MainViewModel::class.java)
         mainViewModel.fetchAndStoreQuizzes()
         setNavigation()
     }
