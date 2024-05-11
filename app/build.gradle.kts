@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("kotlin-parcelize")
-    id("kotlin-kapt")
+    //id("kotlin-kapt")
     id("com.google.android.gms.oss-licenses-plugin")
 }
 
@@ -66,13 +66,13 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
 
     // Dagger 2
-    implementation("com.google.dagger:dagger:2.34")
-    implementation("com.google.dagger:dagger-android:2.40")
-    implementation("com.google.dagger:dagger-android-support:2.40")
-    kapt("com.google.dagger:dagger-compiler:2.34")
-    kapt("com.google.dagger:dagger-android-processor:2.40")
-    implementation("com.google.dagger:hilt-android:2.37")
-    kapt("com.google.dagger:hilt-android-compiler:2.37")
+//    implementation("com.google.dagger:dagger:2.34")
+//    implementation("com.google.dagger:dagger-android:2.40")
+//    implementation("com.google.dagger:dagger-android-support:2.40")
+//    kapt("com.google.dagger:dagger-compiler:2.34")
+//    kapt("com.google.dagger:dagger-android-processor:2.40")
+//    implementation("com.google.dagger:hilt-android:2.37")
+//    kapt("com.google.dagger:hilt-android-compiler:2.37")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
