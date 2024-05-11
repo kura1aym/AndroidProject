@@ -1,0 +1,6 @@
+<resources>
+    <string-array name="question_type_choice">
+        <item name="0">@string/multiple_choice</item>
+        <item name="1">@string/short_form</item>
+    </string-array>
+</resources>
