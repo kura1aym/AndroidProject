@@ -1,3 +1,60 @@
 <resources>
     <string name="app_name">QuizApp</string>
+
+    <!-- General -->
+    <string name="content_description">Content description</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Play -->
+    <string name="play">Play</string>
+    <string name="empty_message_play">There is no quiz to play, add a new one on the Edit page.</string>
+    <string name="app_info">App Info</string>
+    <string name="select">Select</string>
+    <string name="skip">Skip</string>
+    <string name="finish">Finish</string>
+    <string name="your_score">Your Score</string>
+    <string name="_100_100">100/100</string>
+    <string name="_100">/100</string>
+    <string name="exit">Exit</string>
+    <string name="view_answer">View Answer</string>
+    <string name="player_name">Player name</string>
+    <string name="can_be_filled_with_anything">Can be filled with anything</string>
+    <string name="_1">1</string>
+
+    <!-- Leaderboard -->
+    <string name="leaderboard">Leaderboard</string>
+    <string name="empty_message_leaderboard">There is no leaderboard data at this time.</string>
+    <string name="clear">Clear</string>
+
+    <!-- Edit -->
+    <string name="edit">Edit</string>
+    <string name="empty_message_edit">There is no quiz added yet, press the Add Quiz button to add a new one.</string>
+    <string name="refresh">Refresh</string>
+    <string name="delete">Delete</string>
+    <string name="select_all">Select All</string>
+
+    <string name="add_quiz">Add Quiz</string>
+    <string name="add_new_quiz">Add new quiz</string>
+    <string name="edit_quiz">Edit quiz</string>
+    <string name="set_image">Set Image</string>
+    <string name="title">Title</string>
+    <string name="desc">Description</string>
+    <string name="save">Save</string>
+
+    <string name="add_question">Add Question</string>
+    <string name="question">Question</string>
+    <string name="empty_message_edit_question">There is no question added yet, press the Add Question button to add a new one.</string>
+    <string name="add_new_question">Add new question</string>
+    <string name="edit_question">Edit question</string>
+    <string name="question_type">Question type</string>
+    <string name="multiple_choice">Multiple choice</string>
+    <string name="short_form">Short form</string>
+
+    <string name="add_answer">Add Answer</string>
+    <string name="answer">Answer</string>
+    <string name="empty_message_edit_answer">There is no answer added yet, press the Add Answer button to add a new one.</string>
+    <string name="add_new_answer">Add new answer</string>
+    <string name="edit_answer">Edit answer</string>
+    <string name="correct_answer">Correct answer</string>
 </resources>
