@@ -24,8 +24,8 @@ fun mapApiResponseToQuiz(apiResponse: QuizApiResponse): Quiz {
     return Quiz(
         title = apiResponse.results.firstOrNull()?.category ?: "default",
         desc = "Generated Quiz",
-        img = null, // Assuming the image is not provided in the API response
-        color = null, // Assuming the color is not provided in the API response
-        questions = questions.toTypedArray() // Convert list of Question to an array
+        img = null,
+        color = null,
+        questions = questions.toTypedArray()
     )
 }
