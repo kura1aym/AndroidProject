@@ -15,9 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.androidbroadcast.quizapp.R
-import dev.androidbroadcast.quizapp.data.model.Quiz
 import dev.androidbroadcast.quizapp.databinding.CardRowItemBinding
 import dev.androidbroadcast.quizapp.databinding.FragmentEditBinding
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 import dev.androidbroadcast.quizapp.ui.edit.activity.EditTitleActivity
 import dev.androidbroadcast.quizapp.ui.helper.ViewModelFactory
 import dev.androidbroadcast.quizapp.ui.main.adapter.EditAdapter
@@ -48,6 +48,7 @@ class EditFragment : Fragment() {
         setOnClickAdapter()
         setButton()
         onBackButtonPressed()
+        getData()
     }
 
     override fun onPause() {
@@ -66,7 +67,7 @@ class EditFragment : Fragment() {
             @Suppress("KotlinConstantConditions")
             viewModel.setLoading(isLoading)
             withContext(Dispatchers.IO) {
-                listQuiz = viewModel.mQuizRepository.getQuizData()
+                listQuiz = viewModel.quizRepository.getQuizData()
                 isLoading = false
             }
             adapter.setListQuiz(listQuiz)

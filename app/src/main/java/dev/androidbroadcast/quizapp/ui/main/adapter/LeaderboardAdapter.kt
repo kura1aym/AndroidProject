@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
 import dev.androidbroadcast.quizapp.databinding.LeaderboardRowItemBinding
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
 import dev.androidbroadcast.quizapp.ui.helper.LeaderboardDiffCallback
 
 class LeaderboardAdapter :

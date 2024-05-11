@@ -1,7 +1,7 @@
 package dev.androidbroadcast.quizapp.ui.helper
 
 import androidx.recyclerview.widget.DiffUtil
-import dev.androidbroadcast.quizapp.data.model.Quiz
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 
 class QuizDiffCallback(
     private val oldQuizList: List<Quiz>,

@@ -5,8 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
-import dev.androidbroadcast.quizapp.data.model.Quiz
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 
 @Database(entities = [Quiz::class, Leaderboard::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.androidbroadcast.quizapp.data.model.Quiz
 import dev.androidbroadcast.quizapp.databinding.FragmentPlayBinding
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 import dev.androidbroadcast.quizapp.ui.helper.ViewModelFactory
 import dev.androidbroadcast.quizapp.ui.main.adapter.PlayAdapter
 import dev.androidbroadcast.quizapp.ui.main.viewmodel.MainViewModel
@@ -32,6 +32,7 @@ class PlayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        obtainViewModel(requireActivity() as AppCompatActivity)
         viewModel.getQuizData()
         viewModel.getLeaderboardData()
         observeData()
@@ -48,6 +49,7 @@ class PlayFragment : Fragment() {
         viewModel.loading.observe(viewLifecycleOwner) {
             setLoading(it)
         }
+        viewModel.getQuizData()
         viewModel.listQuiz.observe(viewLifecycleOwner) {
             adapter.setListQuiz(it)
             if (it.isEmpty()) {
@@ -57,6 +59,7 @@ class PlayFragment : Fragment() {
             }
         }
     }
+
 
     private fun setLoading(status: Boolean) {
         if (status) {

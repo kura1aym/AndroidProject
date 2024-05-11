@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
-import dev.androidbroadcast.quizapp.data.model.Quiz
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 
 @Dao
 interface QuizDao {

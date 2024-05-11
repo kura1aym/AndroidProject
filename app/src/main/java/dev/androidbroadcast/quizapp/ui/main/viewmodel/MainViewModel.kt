@@ -1,26 +1,42 @@
 package dev.androidbroadcast.quizapp.ui.main.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
-import dev.androidbroadcast.quizapp.data.model.Quiz
-import dev.androidbroadcast.quizapp.data.repository.QuizRepository
+import dev.androidbroadcast.quizapp.data.database.QuizRoomDatabase
+import dev.androidbroadcast.quizapp.data.network.ApiClient
+import dev.androidbroadcast.quizapp.data.repository.QuizRepositoryImpl
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
+import dev.androidbroadcast.quizapp.domain.model.Quiz
+import dev.androidbroadcast.quizapp.domain.repository.QuizRepository
+import dev.androidbroadcast.quizapp.domain.usecases.ClearLeaderboardDataUseCase
+import dev.androidbroadcast.quizapp.domain.usecases.DeleteQuizUseCase
+import dev.androidbroadcast.quizapp.domain.usecases.FetchAndStoreQuizzesUseCase
+import dev.androidbroadcast.quizapp.domain.usecases.GetQuizDataUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : ViewModel() {
 
-    val mQuizRepository: QuizRepository = QuizRepository(application)
+    val quizRepository: QuizRepository = QuizRepositoryImpl(
+        QuizRoomDatabase.getDatabase(application).quizDao(),
+        ApiClient.quizApiService
+    )
+
+    private val fetchAndStoreQuizzesUseCase = FetchAndStoreQuizzesUseCase(quizRepository)
+    private val getQuizDataUseCase = GetQuizDataUseCase(quizRepository)
+    private val clearLeaderboardDataUseCase = ClearLeaderboardDataUseCase(quizRepository)
+    private val deleteQuizUseCase = DeleteQuizUseCase(quizRepository)
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _listQuiz = MutableLiveData<List<Quiz>>()
-    lateinit var listQuiz: LiveData<List<Quiz>>
+    private val _listQuiz = MutableLiveData<List<Quiz>>().apply { value = emptyList() }
+    val listQuiz: LiveData<List<Quiz>> = _listQuiz
 
     private val _listLeaderboard = MutableLiveData<List<Leaderboard>>()
     lateinit var listLeaderboard: LiveData<List<Leaderboard>>
@@ -35,42 +51,59 @@ class MainViewModel(application: Application) : ViewModel() {
     fun fetchAndStoreQuizzes() {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.postValue(true)
-
-            mQuizRepository.fetchAndStoreQuizzes()
-
-            _listQuiz.postValue(mQuizRepository.getQuizData())
-
+            try {
+                fetchAndStoreQuizzesUseCase.execute()
+                _listQuiz.postValue(getQuizDataUseCase.execute())
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Error fetching and storing quizzes: $e")
+            }
             _loading.postValue(false)
         }
     }
 
     fun deleteQuizData(selectedItems: IntArray) {
-        for (i in selectedItems) {
-            listQuiz.value?.get(i)?.let { mQuizRepository.delete(it) }
+        viewModelScope.launch(Dispatchers.IO) {
+            for (i in selectedItems) {
+                try {
+                    listQuiz.value?.get(i)?.let { quiz ->
+                        deleteQuizUseCase.execute(quiz)
+                    }
+                } catch (e: Exception) {
+                    Log.e("MainViewModel", "Error deleting quiz data: $e")
+                }
+            }
         }
     }
 
     fun getQuizData() {
-        listQuiz = liveData {
-            _loading.value = true
-            emit(mQuizRepository.getQuizData())
-            _loading.value = false
+        _loading.value = true
+        viewModelScope.launch(Dispatchers.IO) {
+            val quizData = quizRepository.getQuizData()
+            _listQuiz.postValue(quizData)
+            _loading.postValue(false)
         }
     }
 
     fun replaceTopicData(quizData: List<Quiz>) {
-        _listQuiz.value = quizData
-        listQuiz = _listQuiz
+        _listQuiz.postValue(quizData)
     }
 
+
     fun clearLeaderboardData() {
-        mQuizRepository.clearLeaderboardData()
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                clearLeaderboardDataUseCase.execute()
+                _listLeaderboard.postValue(emptyList()) // Очищаем список лидеров после очистки данных
+            } catch (e: Exception) {
+                Log.e("MainViewModel", "Error clearing leaderboard data: $e")
+            }
+        }
     }
 
     fun getLeaderboardData() {
         listLeaderboard = liveData {
             _loading.value = true
-            emit(mQuizRepository.getLeaderboardData())
+            emit(quizRepository.getLeaderboardData())
             _loading.value = false
         }
     }

@@ -2,7 +2,7 @@ package dev.androidbroadcast.quizapp.data.database
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import dev.androidbroadcast.quizapp.data.model.Question
+import dev.androidbroadcast.quizapp.domain.model.Question
 
 class Converters {
     @TypeConverter
