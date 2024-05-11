@@ -1,4 +1,4 @@
-package dev.androidbroadcast.quizapp.data.model
+package dev.androidbroadcast.quizapp.domain.model
 
 import android.net.Uri
 import android.os.Parcelable

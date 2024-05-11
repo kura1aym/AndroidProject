@@ -1,4 +1,4 @@
-package dev.androidbroadcast.quizapp.data.model
+package dev.androidbroadcast.quizapp.domain.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
