@@ -12,8 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.androidbroadcast.quizapp.R
-import dev.androidbroadcast.quizapp.data.model.Leaderboard
 import dev.androidbroadcast.quizapp.databinding.FragmentLeaderboardBinding
+import dev.androidbroadcast.quizapp.domain.model.Leaderboard
 import dev.androidbroadcast.quizapp.ui.helper.ViewModelFactory
 import dev.androidbroadcast.quizapp.ui.main.adapter.LeaderboardAdapter
 import dev.androidbroadcast.quizapp.ui.main.viewmodel.MainViewModel
@@ -55,7 +55,7 @@ class LeaderboardFragment : Fragment() {
             @Suppress("KotlinConstantConditions")
             viewModel.setLoading(isLoading)
             withContext(Dispatchers.IO) {
-                listLeaderboard = viewModel.mQuizRepository.getLeaderboardData()
+                listLeaderboard = viewModel.quizRepository.getLeaderboardData()
                 isLoading = false
             }
             adapter.setListLeaderboard(listLeaderboard)
