@@ -1,9 +1,9 @@
 package dev.androidbroadcast.quizapp.data.mapper
 
-import dev.androidbroadcast.quizapp.data.model.Answer
-import dev.androidbroadcast.quizapp.data.model.Question
-import dev.androidbroadcast.quizapp.data.model.Quiz
+import dev.androidbroadcast.quizapp.domain.model.Answer
 import dev.androidbroadcast.quizapp.data.network.QuizApiResponse
+import dev.androidbroadcast.quizapp.domain.model.Question
+import dev.androidbroadcast.quizapp.domain.model.Quiz
 
 fun mapApiResponseToQuiz(apiResponse: QuizApiResponse): Quiz {
     val questions = apiResponse.results.map { questionApi ->
