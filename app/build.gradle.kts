@@ -71,8 +71,8 @@ dependencies {
     implementation("com.google.dagger:dagger-android-support:2.40")
     kapt("com.google.dagger:dagger-compiler:2.34")
     kapt("com.google.dagger:dagger-android-processor:2.40")
-    implementation("com.google.dagger:hilt-android:2.37")
-    kapt("com.google.dagger:hilt-android-compiler:2.37")
+//    implementation("com.google.dagger:hilt-android:2.37")
+//    kapt("com.google.dagger:hilt-android-compiler:2.37")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

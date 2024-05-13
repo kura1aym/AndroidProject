@@ -61,6 +61,18 @@
                     app:layout_constraintTop_toTopOf="@id/backgroundHeader" />
 
                 <Button
+                    android:id="@+id/takePhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/take_photo"
+                    style="@style/Widget.Material3.Button.TonalButton.Icon"
+                    app:icon="@drawable/ic_camera"
+                    app:layout_constraintBottom_toTopOf="@id/setImageButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="16dp" />
+
+
+                <Button
                     android:id="@+id/setImageButton"
                     style="@style/Widget.Material3.Button.TonalButton.Icon"
                     android:layout_width="wrap_content"
@@ -71,6 +83,7 @@
                     app:icon="@drawable/ic_edit_unselected"
                     app:layout_constraintBottom_toBottomOf="@+id/backgroundHeader"
                     app:layout_constraintEnd_toEndOf="parent" />
+
 
 
                 <com.google.android.material.textfield.TextInputLayout

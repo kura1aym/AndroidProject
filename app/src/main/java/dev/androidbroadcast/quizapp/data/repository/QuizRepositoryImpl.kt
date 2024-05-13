@@ -7,7 +7,6 @@ import dev.androidbroadcast.quizapp.data.network.QuizApiService
 import dev.androidbroadcast.quizapp.domain.model.Leaderboard
 import dev.androidbroadcast.quizapp.domain.model.Quiz
 import dev.androidbroadcast.quizapp.domain.repository.QuizRepository
-import kotlinx.coroutines.Dispatchers
 
 class QuizRepositoryImpl(private val quizDao: QuizDao, private val quizApiService: QuizApiService) : QuizRepository {
 
@@ -41,7 +40,7 @@ class QuizRepositoryImpl(private val quizDao: QuizDao, private val quizApiServic
 
     override suspend fun fetchAndStoreQuizzes() {
         try {
-            val response = quizApiService.fetchQuestions()
+            val response = quizApiService.fetchQuestions(10, 2, 20)
             if (response.isSuccessful) {
                 val apiResponse = response.body()
                 if (apiResponse != null) {
