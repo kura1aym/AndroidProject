@@ -20,6 +20,9 @@ Try quiz by pressing play button, you can answer questions or skip them.**
 <br/><br/>
 *All screenshots are in dark mode.
 
+**Project Features:**
+1. Implement clean architecture by dividing 
+
 
 
 
