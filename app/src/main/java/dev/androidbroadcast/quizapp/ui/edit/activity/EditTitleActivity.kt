@@ -2,17 +2,22 @@ package dev.androidbroadcast.quizapp.ui.edit.activity
 
 import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,13 +28,18 @@ import com.bumptech.glide.Glide
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import android.Manifest
 import dev.androidbroadcast.quizapp.R
 import dev.androidbroadcast.quizapp.domain.model.Quiz
 import dev.androidbroadcast.quizapp.databinding.ActivityEditTitleBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileNotFoundException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.properties.Delegates
 
 class EditTitleActivity : AppCompatActivity() {
@@ -37,6 +47,8 @@ class EditTitleActivity : AppCompatActivity() {
     private lateinit var quizData: Quiz
     private var bitmap: Bitmap? = null
     private var status by Delegates.notNull<Int>()
+    private var imageUri: Uri? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +63,80 @@ class EditTitleActivity : AppCompatActivity() {
         setNextButton()
         setCancelButton()
         onBackButtonPressed()
+        setupUI()
+    }
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
+        handleImageResult(it)
+    }
+
+    private val takePicture = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) {
+            imageUri?.let { uri ->
+                lifecycleScope.launch {
+                    loadPhoto(uri)
+                }
+            }
+        }
+    }
+
+    private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) {
+            takePhoto()
+        } else {
+            Toast.makeText(this, "Camera permission is required to use the camera", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setupUI() {
+        binding.setImageButton.setOnClickListener {
+            getContent.launch("image/*")
+        }
+
+        binding.takePhotoButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                takePhoto()
+            } else {
+                requestPermission.launch(Manifest.permission.CAMERA)
+            }
+        }
+    }
+
+    private fun takePhoto() {
+        imageUri = getOutputMediaFileUri()
+        imageUri?.let { takePicture.launch(it) }
+    }
+
+    private fun getOutputMediaFileUri(): Uri? {
+        val mediaStorageDir = File(getExternalFilesDir(null), "QuizApp")
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null
+            }
+        }
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val mediaFile = File(mediaStorageDir.path + File.separator + "IMG_" + timeStamp + ".jpg")
+
+        return FileProvider.getUriForFile(this, "dev.androidbroadcast.quizapp.provider", mediaFile)
+    }
+
+    private fun handleImageResult(uri: Uri?) {
+        uri?.let {
+            lifecycleScope.launch {
+                loadPhoto(it)
+            }
+        }
+    }
+
+    private suspend fun loadPhoto(uri: Uri) {
+        withContext(Dispatchers.IO) {
+            val stream = contentResolver.openInputStream(uri)
+            bitmap = BitmapFactory.decodeStream(stream)
+        }
+        bitmap?.let { b ->
+            binding.backgroundHeader.setImageBitmap(b)
+            binding.backgroundHeader.alpha = 0.3F
+        }
     }
 
     private fun getData() {
@@ -156,6 +242,7 @@ class EditTitleActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun setSetImageButton() {
         with(binding) {
